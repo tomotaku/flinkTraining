@@ -1,5 +1,6 @@
 package org.data
-case class accountInfo() extends Serializable {
+case class AccountInfo() extends Serializable {
+   val JDBC_DRIVER: String = "com.mysql.cj.jdbc.Driver"
    val sourceJdbcUrl: String = "jdbc:mysql://localhost:3306/test"
    val sourceJdbcUserName: String = "root"
    val sourceJdbcPassword: String = "123456"

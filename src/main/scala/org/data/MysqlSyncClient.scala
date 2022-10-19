@@ -2,34 +2,29 @@ package org.data
 
 import java.sql._
 
-class MysqlSyncClient[user] {
-  val JDBC_DRIVER: String = "com.mysql.jdbc.Driver"
-  val URL: String = "jdbc:mysql://localhost:3306/flink"
-  val USER: String = "root"
-  val PASSWORD: String = "123456"
+class MysqlSyncClient[customUser] {
+  val info: AccountInfo = AccountInfo()
   var connection: Connection = _
 
   try {
-    Class.forName(JDBC_DRIVER)
+    Class.forName(info.JDBC_DRIVER)
   } catch {
     case e: ClassNotFoundException => println("Driver not found!" + e.getMessage)
   }
   try {
-    connection = DriverManager.getConnection(URL, USER, PASSWORD)
+    connection = DriverManager.getConnection(info.sourceJdbcUrl, info.sourceJdbcUserName, info.sourceJdbcPassword)
   } catch {
     case e: SQLException => println("init connection failed!" + e.getMessage)
   }
 
-  def query(t: user): Stream[String] = {
-    val info = t.toString.split(",")
-    val sqlQuery: String = s"insert table xxx values ($info(1),$info(2),$info(3),$info(4),$info(5))"
+  def query(t: customUser):String = {
+    val info = t.toString
+    val sqlQuery: String = s"insert table ??? values ($info)"
     val statement: Statement = connection.createStatement()
-    val resultSet: ResultSet = statement.executeQuery(sqlQuery)
-    val result = new Iterator[String] {
-      def hasNext = resultSet.next()
-      def next() = resultSet.getString(1)
-    }
-    result.toStream
+    // https://stackoverflow.com/questions/25745094/getting-resultset-from-insert-statement
+    val result: Int = statement.executeUpdate(sqlQuery)
+    val ans: String = s"insert $result row values $info"
+    ans
   }
 
   def close(): Unit = {
@@ -41,5 +36,4 @@ class MysqlSyncClient[user] {
       case e: SQLException => println("close connection failed!" + e.getMessage)
     }
   }
-
 }

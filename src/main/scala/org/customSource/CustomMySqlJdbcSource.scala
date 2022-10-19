@@ -2,15 +2,15 @@ package org.customSource
 
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.functions.source.{RichSourceFunction, SourceFunction}
-import org.data.{accountInfo, user}
+import org.data.{AccountInfo, CustomUser}
 //import org.slf4j.LoggerFactory
 
 import java.sql.{Connection, DriverManager, PreparedStatement, ResultSet}
 
-class CustomMySqlJdbcSource extends RichSourceFunction[user] {
+class CustomMySqlJdbcSource extends RichSourceFunction[CustomUser] {
   var conn: Connection = _
   var stat: PreparedStatement = _
-  val info: accountInfo = accountInfo()
+  val info: AccountInfo = AccountInfo()
 
   override def open(parameters: Configuration): Unit = {
     super.open(parameters)
@@ -22,7 +22,7 @@ class CustomMySqlJdbcSource extends RichSourceFunction[user] {
     stat = conn.prepareStatement("select * from flinkSourceTest")
   }
 
-  override def run(ctx: SourceFunction.SourceContext[user]): Unit = {
+  override def run(ctx: SourceFunction.SourceContext[CustomUser]): Unit = {
     /**
      * 使用jdbc读取mysql的数据，将读取到的数据发送到下游
      */
@@ -37,7 +37,7 @@ class CustomMySqlJdbcSource extends RichSourceFunction[user] {
       val name: String = result.getString("name")
       val age: Int = result.getInt("age")
       //将每一条数据发送到下游
-      val new_user = new user(id, name, age)
+      val new_user = new CustomUser(id, name, age)
       ctx.collect(new_user)
     }
   }

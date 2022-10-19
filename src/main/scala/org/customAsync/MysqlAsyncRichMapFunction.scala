@@ -2,20 +2,19 @@ package org.customAsync
 
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.scala.async.{ResultFuture, RichAsyncFunction}
-import org.data.{MysqlSyncClient, user}
+import org.data.{MysqlSyncClient, CustomUser}
 
-import java.util.Collections
-import java.util.concurrent.{Future, LinkedBlockingQueue, ThreadPoolExecutor, TimeUnit}
+import java.util.concurrent.{LinkedBlockingQueue, ThreadPoolExecutor, TimeUnit}
 
 
-class MysqlAsyncRichMapFunction extends RichAsyncFunction[user, Stream[String]] {
+class MysqlAsyncRichMapFunction extends RichAsyncFunction[CustomUser, String] {
   private val DEFAULT_CLIENT_THREAD_NUM: Int = 10
-  var client: MysqlSyncClient[user] = _
+  var client: MysqlSyncClient[CustomUser] = _
   var executorService: ThreadPoolExecutor = _
 
   override def open(parameters: Configuration): Unit = {
     super.open(parameters)
-    client = new MysqlSyncClient[user]
+    client = new MysqlSyncClient[CustomUser]
     executorService = new ThreadPoolExecutor(
       DEFAULT_CLIENT_THREAD_NUM,
       DEFAULT_CLIENT_THREAD_NUM,
@@ -26,27 +25,11 @@ class MysqlAsyncRichMapFunction extends RichAsyncFunction[user, Stream[String]] 
 
   override def close(): Unit = super.close()
 
-  override def asyncInvoke(input: user , resultFuture: ResultFuture[user]): Unit = {
-//    executorService.execute(new Runnable() {
-//
-//      override def run(): Unit = {
-//        resultFuture.complete(
-//          Collections.singletonList[Stream[String]](
-//            client.query(input)
-//          )
-//        )
-//      }
-//    }
-
-    val resultFutureRequested: Future[String] = client.query(input)
-    resultFutureRequested.onSuccess {
-      case result: String => resultFuture.complete(Iterable((str, result)))
-    }
-  }
-
-  override def timeout(input: user, resultFuture: ResultFuture[user]): Unit = {
-    println("async call time out!")
-    //    input.setParentCategoryId(Long.MIN_VALUE)
-    resultFuture.complete(Collections.singleton(input))
+  override def asyncInvoke(input: CustomUser, resultFuture: ResultFuture[String]): Unit = {
+    executorService.execute(new Runnable() {
+      override def run(): Unit = {
+        resultFuture.complete(Iterable(client.query(input)))
+      }
+    })
   }
 }

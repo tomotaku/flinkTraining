@@ -1,6 +1,6 @@
 package org.data
 
-class user() extends Serializable {
+class CustomUser() extends Serializable {
   var age:Int = _
   var name:String = _
   var id: Int = _

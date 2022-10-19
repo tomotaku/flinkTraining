@@ -1,13 +1,13 @@
 package org.customSink
 
-import org.data.{accountInfo, user}
+import org.data.{AccountInfo, CustomUser}
 import org.slf4j.LoggerFactory
 
 import java.sql.DriverManager
 import java.util.concurrent.{CyclicBarrier, LinkedBlockingQueue, TimeUnit}
 
-private class MultiThreadConsumerClient(bufferQueue: LinkedBlockingQueue[user], barrier: CyclicBarrier) extends Runnable {
-  val logger = LoggerFactory.getLogger(getClass())
+private class MultiThreadConsumerClient(bufferQueue: LinkedBlockingQueue[CustomUser], barrier: CyclicBarrier) extends Runnable {
+  val logger = LoggerFactory.getLogger(getClass)
 
   override def run(): Unit = {
     while (true) {
@@ -21,16 +21,16 @@ private class MultiThreadConsumerClient(bufferQueue: LinkedBlockingQueue[user], 
       else {
         if (barrier.getNumberWaiting > 0) {
           println("MultiThreadConsumerClient 执行 flush, " +
-            "当前 wait 的线程数：" + barrier.getNumberWaiting())
+            "当前 wait 的线程数：" + barrier.getNumberWaiting)
           barrier.await()
         }
       }
     }
 
-    def doSomething(value: user): Unit = {
+    def doSomething(value: CustomUser): Unit = {
       // client 积攒批次并调用第三方 api
       logger.info("entityArray: "+value.toString())
-      val info:accountInfo = new accountInfo()
+      val info:AccountInfo = AccountInfo()
       Class.forName("com.mysql.cj.jdbc.Driver")
       val conn = DriverManager.getConnection(
         info.sinkJdbcUrl,

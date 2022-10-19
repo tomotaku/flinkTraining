@@ -4,19 +4,19 @@ import org.apache.flink.calcite.shaded.com.google.common.collect.Queues
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.runtime.state.{FunctionInitializationContext, FunctionSnapshotContext}
 import org.apache.flink.streaming.api.functions.sink.{RichSinkFunction, SinkFunction}
-import org.data.user
+import org.data.CustomUser
 import org.slf4j.{Logger, LoggerFactory}
 
 import java.util.concurrent.{CyclicBarrier, LinkedBlockingQueue, ThreadPoolExecutor, TimeUnit}
 
-class MultiThreadConsumerSink extends RichSinkFunction[user] {
+class MultiThreadConsumerSink extends RichSinkFunction[CustomUser] {
   private val DEFAULT_CLIENT_THREAD_NUM: Int = 10
   private val DEFAULT_QUEUE_CAPACITY: Int = 5000
   private val LOG: Logger = LoggerFactory.getLogger(classOf[MultiThreadConsumerSink])
-  var bufferQueue: LinkedBlockingQueue[user] = _
+  var bufferQueue: LinkedBlockingQueue[CustomUser] = _
   var clientBarrier: CyclicBarrier = _
 
-  def this(bufferQueue: LinkedBlockingQueue[user], clientBarrier: CyclicBarrier) {
+  def this(bufferQueue: LinkedBlockingQueue[CustomUser], clientBarrier: CyclicBarrier) {
     this()
     this.bufferQueue = bufferQueue
     this.clientBarrier = clientBarrier
@@ -39,7 +39,7 @@ class MultiThreadConsumerSink extends RichSinkFunction[user] {
     }
   }
 
-  override def invoke(value: user, context: SinkFunction.Context): Unit = {
+  override def invoke(value: CustomUser, context: SinkFunction.Context): Unit = {
     LOG.info("sinkto: " + value.toString)
     LOG.info("sinktobufferQueue: " + bufferQueue.hashCode())
     bufferQueue.put(value)
@@ -49,7 +49,7 @@ class MultiThreadConsumerSink extends RichSinkFunction[user] {
    def snapshotState(functionSnapshotContext:FunctionSnapshotContext): Unit ={
     LOG.info("snapshotState : 所有的 client 准备 flush !!!")
     // barrier 开始等待
-    clientBarrier.await();
+    clientBarrier.await()
   }
    def initializeState(functionInitializationContext:FunctionInitializationContext):Unit={
   }
