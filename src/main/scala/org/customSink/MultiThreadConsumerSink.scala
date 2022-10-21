@@ -10,7 +10,7 @@ import org.slf4j.{Logger, LoggerFactory}
 import java.util.concurrent.{CyclicBarrier, LinkedBlockingQueue, ThreadPoolExecutor, TimeUnit}
 
 class MultiThreadConsumerSink extends RichSinkFunction[CustomUser] {
-  private val DEFAULT_CLIENT_THREAD_NUM: Int = 10
+  private val DEFAULT_CLIENT_THREAD_NUM: Int = 3
   private val DEFAULT_QUEUE_CAPACITY: Int = 5000
   private val LOG: Logger = LoggerFactory.getLogger(classOf[MultiThreadConsumerSink])
   var bufferQueue: LinkedBlockingQueue[CustomUser] = _

@@ -64,11 +64,18 @@
             <artifactId>flink-table-api-scala-bridge_${scala.compat.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.alibaba.ververica/flink-connector-mysql-cdc -->
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.alibaba.ververica/flink-connector-mysql-cdc &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.ververica</groupId>-->
+<!--            <artifactId>flink-sql-connector-mysql-cdc</artifactId>-->
+<!--            <version>1.4.0</version>-->
+<!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/com.ververica/flink-connector-mysql-cdc -->
         <dependency>
-            <groupId>com.alibaba.ververica</groupId>
+            <groupId>com.ververica</groupId>
             <artifactId>flink-connector-mysql-cdc</artifactId>
-            <version>1.4.0</version>
+            <version>2.0.0</version>
+<!--            <scope>provided</scope>-->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-clients -->
@@ -113,7 +120,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.28</version>
+            <version>5.1.39</version>
         </dependency>
 
     </dependencies>

@@ -3,6 +3,7 @@ package org.job
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.api.common.restartstrategy.RestartStrategies
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
+import org.apache.flink.table.sources.wmstrategies.WatermarkStrategy
 import org.customSink.{CustomMysqlJdbcSink, MultiThreadConsumerSink}
 import org.customSource.CustomMySqlJdbcSource
 import org.data.CustomUser

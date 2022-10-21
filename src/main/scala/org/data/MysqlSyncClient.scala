@@ -18,12 +18,16 @@ class MysqlSyncClient[customUser] {
   }
 
   def query(t: customUser):String = {
-    val info = t.toString
-    val sqlQuery: String = s"insert table ??? values ($info)"
+    val info = t.toString.split(",")
+    val info1 = info(0)
+    val info2 = info(1)
+    val info3 = info(2)
+    val sqlQuery: String = s"insert into flinkSinkTest values ($info1,'$info2',$info3)"
+    println(s"sqlQuery: $sqlQuery")
     val statement: Statement = connection.createStatement()
     // https://stackoverflow.com/questions/25745094/getting-resultset-from-insert-statement
     val result: Int = statement.executeUpdate(sqlQuery)
-    val ans: String = s"insert $result row values $info"
+    val ans: String = s"insert $result row values (${info.mkString(",")})"
     ans
   }
 

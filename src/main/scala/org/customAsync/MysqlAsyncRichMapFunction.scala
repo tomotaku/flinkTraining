@@ -8,7 +8,7 @@ import java.util.concurrent.{LinkedBlockingQueue, ThreadPoolExecutor, TimeUnit}
 
 
 class MysqlAsyncRichMapFunction extends RichAsyncFunction[CustomUser, String] {
-  private val DEFAULT_CLIENT_THREAD_NUM: Int = 10
+  private val DEFAULT_CLIENT_THREAD_NUM: Int = 8
   var client: MysqlSyncClient[CustomUser] = _
   var executorService: ThreadPoolExecutor = _
 
@@ -17,7 +17,7 @@ class MysqlAsyncRichMapFunction extends RichAsyncFunction[CustomUser, String] {
     client = new MysqlSyncClient[CustomUser]
     executorService = new ThreadPoolExecutor(
       DEFAULT_CLIENT_THREAD_NUM,
-      DEFAULT_CLIENT_THREAD_NUM,
+      DEFAULT_CLIENT_THREAD_NUM+2,
       0L,
       TimeUnit.MILLISECONDS,
       new LinkedBlockingQueue())
