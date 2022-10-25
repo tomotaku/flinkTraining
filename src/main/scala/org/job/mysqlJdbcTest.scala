@@ -18,11 +18,11 @@ object mysqlJdbcTest {
     //        8081,
     //        jarFilePath
     //        )
-    env.enableCheckpointing(300)
+//    env.enableCheckpointing(1000)
     env.setRestartStrategy(RestartStrategies.noRestart())
     env.setParallelism(1)
     val stream: DataStream[CustomUser] = env.addSource(new CustomMySqlJdbcSource)
-    stream.addSink(new MultiThreadConsumerSink())
+    stream.addSink(new MultiThreadConsumerSink()).setParallelism(10)
     env.execute("test")
   }
 }

@@ -7,7 +7,7 @@ import org.apache.flink.api.common.restartstrategy.RestartStrategies
 import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
 import com.ververica.cdc.debezium.{DebeziumSourceFunction, StringDebeziumDeserializationSchema}
 
-object mysqlJdbcTest_2 {
+object mysqlJdbcTest_cdc {
   def main(array: Array[String]) {
     val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
     val mySqlSource = MySqlSource.builder()
@@ -23,6 +23,7 @@ object mysqlJdbcTest_2 {
 
     env.enableCheckpointing(3000)
     env.setRestartStrategy(RestartStrategies.noRestart())
+//    env.setStateBackend()
     env.setParallelism(1)
     val stream: DataStream[String] = env.addSource(mySqlSource)
     stream.print()
