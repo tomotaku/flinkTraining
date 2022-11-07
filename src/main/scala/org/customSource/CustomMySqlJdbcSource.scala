@@ -19,7 +19,7 @@ class CustomMySqlJdbcSource extends RichSourceFunction[CustomUser] {
       info.sourceJdbcUserName,
       info.sourceJdbcPassword)
     //编写查询的数据sql
-    stat = conn.prepareStatement("select * from flinkSourceTest")
+    stat = conn.prepareStatement("select * from flinkSourceTest order by rand(unix_timestamp()) LIMIT 1000")
   }
 
   override def run(ctx: SourceFunction.SourceContext[CustomUser]): Unit = {

@@ -64,20 +64,19 @@
             <artifactId>flink-table-api-scala-bridge_${scala.compat.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.alibaba.ververica/flink-connector-mysql-cdc &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.ververica</groupId>-->
-<!--            <artifactId>flink-sql-connector-mysql-cdc</artifactId>-->
-<!--            <version>1.4.0</version>-->
-<!--        </dependency>-->
+        <!--  &lt;!&ndash; https://mvnrepository.com/artifact/com.alibaba.ververica/flink-connector-mysql-cdc &ndash;&gt;-->
+        <!--  <dependency>-->
+        <!--      <groupId>com.alibaba.ververica</groupId>-->
+        <!--      <artifactId>flink-sql-connector-mysql-cdc</artifactId>-->
+        <!--      <version>1.4.0</version>-->
+        <!--  </dependency>-->
         <!-- https://mvnrepository.com/artifact/com.ververica/flink-connector-mysql-cdc -->
         <dependency>
             <groupId>com.ververica</groupId>
             <artifactId>flink-connector-mysql-cdc</artifactId>
             <version>2.0.0</version>
-<!--            <scope>provided</scope>-->
+        <!-- <scope>provided</scope>-->
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-clients -->
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -122,7 +121,18 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.39</version>
         </dependency>
-
+        <!-- https://www.mvncenter.com/search/com.alibaba/druid/1.2.14-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.2.14</version>
+        </dependency>
+        <!-- https://www.mvncenter.com/search/org.apache.flink/flink-connector-kafka/1.15.2-->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-kafka</artifactId>
+            <version>1.15.2</version>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>

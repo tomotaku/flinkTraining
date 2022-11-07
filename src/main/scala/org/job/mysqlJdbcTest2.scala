@@ -25,7 +25,6 @@ object mysqlJdbcTest2 {
 //    env.getConfig.setAutoWatermarkInterval(5000)
     val stream: DataStream[ListBuffer[CustomUser]] = env.addSource(new CustomMySqlJdbcSource2)
     val time2=System.currentTimeMillis()
-//    setParallelism再大也没啥效果
     stream.addSink(new CustomMysqlJdbcSink2()).setParallelism(4)
     env.execute("test")
     val time3=System.currentTimeMillis()
